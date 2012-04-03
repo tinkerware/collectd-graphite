@@ -118,9 +118,10 @@ sub graphite_config {
 sub graphite_write {
     my ($type, $ds, $vl) = @_;
 
-    my $host = $vl->{'host'};
-    $host =~ s/\./_/g;
-
+    my $fq_host = $vl->{'host'};
+    # just the simple host name
+    my ($host) = $fq_host =~ m/^([^.]+)(\..*)?/;
+    
     my $plugin_str = $vl->{'plugin'};
     my $type_str   = $vl->{'type'};
     
