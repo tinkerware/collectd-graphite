@@ -90,6 +90,7 @@ my $sock_timeout  = 10;
 # config vars.  These can be overridden in collectd.conf
 my $buffer_size   = 8192;
 my $prefix        = 'collectd';
+my $suffix        = 'sys';
 my $graphite_host = 'localhost';
 my $graphite_port = 2003;
 
@@ -105,6 +106,8 @@ sub graphite_config {
             $buffer_size = $val;
         } elsif ( $key =~ /prefix/i ) {
             $prefix = $val;
+        } elsif ( $key =~ /suffix/i ) {
+            $suffix = $val;
         } elsif ( $key =~ /host/i ) {
             $graphite_host = $val;
         } elsif ( $key =~ /port/i ) {
@@ -133,9 +136,10 @@ sub graphite_write {
     }
     
     for (my $i = 0; $i < scalar (@$ds); ++$i) {
-        my $graphite_path = sprintf "%s.%s.%s.%s.%s",
+        my $graphite_path = sprintf "%s.%s.%s.%s.%s.%s",
             $prefix,
             $host,
+            $suffix,
             $plugin_str,
             $type_str,
             $ds->[$i]->{'name'};
